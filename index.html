@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UX Audit & Strategic Roadmap — Poonawalla Fincorp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ─── TOKENS ─────────────────────────────────────────────── */
+        :root {
+            --bg: #D8D9CB;
+            /* Figma sage-grey — primary bg */
+            --bg-beige: #EDE9DE;
+            /* warm beige — secondary bg */
+            --white: #FFFFFF;
+            --ink: #0D0D0D;
+            --navy: #1B2357;
+            /* Poonawalla brand navy — text/accents only */
+            --card-bg: #F5F3EC;
+            /* warm off-white card */
+            --card-sage: #E4E5D8;
+            /* sage card on beige bg */
+            --dim: #58584E;
+            --critical: #B83232;
+            --high: #C45000;
+            --medium: #7A5C00;
+            --low: #2A7A4A;
+            --rule: rgba(13, 13, 13, 0.1);
+        }
+
+        /* ─── RESET ──────────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ─── SLIDE WRAPPER ──────────────────────────────────────── */
+        .slide {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 72px 8vw;
+            position: relative;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .slide--dark {
+            background: var(--bg-beige);
+            color: var(--ink);
+            --rule: rgba(13, 13, 13, 0.1);
+        }
+
+        .slide--navy {
+            background: var(--white);
+            color: var(--ink);
+        }
+
+        .slide--white {
+            background: var(--bg);
+            color: var(--ink);
+        }
+
+        /* ─── NAV BAR ────────────────────────────────────────────── */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 6vw;
+            background: rgba(216, 217, 203, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .topbar__logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar__logo span {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border: 2.5px solid var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .topbar__date {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        /* ─── SLIDE COUNTER ──────────────────────────────────────── */
+        .slide__num {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slide__num::after {
+            content: '';
+            display: inline-block;
+            width: 40px;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.4;
+        }
+
+        .slide--dark .slide__num {
+            color: var(--dim);
+        }
+
+        .slide--navy .slide__num {
+            color: var(--dim);
+        }
+
+        /* ─── TYPOGRAPHY ─────────────────────────────────────────── */
+        .display {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(56px, 8vw, 108px);
+            font-weight: 800;
+            line-height: 0.93;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+
+        .display--sm {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(30px, 4vw, 58px);
+            font-weight: 700;
+            line-height: 1.02;
+            letter-spacing: 0em;
+            text-transform: uppercase;
+        }
+
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            font-weight: 400;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 16px;
+        }
+
+        .slide--dark .section-label {
+            color: var(--dim);
+        }
+
+        .slide--navy .section-label {
+            color: var(--dim);
+        }
+
+        .lead {
+            font-family: 'Barlow', sans-serif;
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.65;
+            color: var(--dim);
+            max-width: 640px;
+        }
+
+        .slide--dark .lead {
+            color: var(--dim);
+        }
+
+        .slide--navy .lead {
+            color: var(--dim);
+        }
+
+        .body {
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--dim);
+        }
+
+        .slide--dark .body {
+            color: var(--dim);
+        }
+
+        /* ─── DIVIDER ────────────────────────────────────────────── */
+        .rule {
+            width: 48px;
+            height: 2px;
+            background: var(--navy);
+            margin: 28px 0;
+        }
+
+        .slide--dark .rule,
+        .slide--navy .rule {
+            background: rgba(13, 13, 13, 0.15);
+        }
+
+        /* ─── BADGE / TAG ────────────────────────────────────────── */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 2px;
+        }
+
+        .badge--critical {
+            background: rgba(192, 57, 43, 0.12);
+            color: var(--critical);
+        }
+
+        .badge--high {
+            background: rgba(211, 84, 0, 0.12);
+            color: var(--high);
+        }
+
+        .badge--medium {
+            background: rgba(142, 107, 0, 0.12);
+            color: var(--medium);
+        }
+
+        .badge--low {
+            background: rgba(39, 174, 96, 0.12);
+            color: var(--low);
+        }
+
+        .badge--win {
+            background: rgba(27, 35, 87, 0.1);
+            color: var(--navy);
+        }
+
+        /* ─── GRID UTILITIES ─────────────────────────────────────── */
+        .col2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        .col3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .col4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media(max-width:900px) {
+
+            .col2,
+            .col3,
+            .col4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ─── CARD ───────────────────────────────────────────────── */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(13, 13, 13, 0.08);
+            border-radius: 4px;
+            padding: 28px 26px;
+        }
+
+        .card--dark {
+            background: var(--card-sage);
+            border-color: rgba(13, 13, 13, 0.1);
+        }
+
+        .card--navy-bg {
+            background: var(--card-bg);
+            border-color: rgba(13, 13, 13, 0.1);
+        }
+
+        .card__num {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--navy);
+            line-height: 1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .slide--dark .card__num {
+            color: var(--navy);
+        }
+
+        .slide--navy .card__num {
+            color: var(--navy);
+        }
+
+        .card__label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 12px;
+        }
+
+        .slide--dark .card__label {
+            color: var(--dim);
+        }
+
+        .slide--navy .card__label {
+            color: var(--dim);
+        }
+
+        .card__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+        }
+
+        .slide--dark .card__title {
+            color: var(--ink);
+        }
+
+        .slide--navy .card__title {
+            color: var(--ink);
+        }
+
+        .card__body {
+            font-family: 'Barlow', sans-serif;
+            font-size: 13.5px;
+            color: var(--dim);
+            line-height: 1.65;
+        }
+
+        .slide--dark .card__body {
+            color: var(--dim);
+        }
+
+        .slide--navy .card__body {
+            color: var(--dim);
+        }
+
+        /* ─── TABLE ──────────────────────────────────────────────── */
+        .audit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .audit-table th {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: var(--dim);
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .audit-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--rule);
+            vertical-align: top;
+            color: var(--ink);
+            font-family: 'Barlow', sans-serif;
+            font-size: 13.5px;
+        }
+
+        .slide--dark .audit-table td {
+            color: var(--ink);
+        }
+
+        .slide--dark .audit-table th {
+            color: var(--dim);
+            border-color: var(--rule);
+        }
+
+        .slide--dark .audit-table tr:last-child td {
+            border-color: var(--rule);
+        }
+
+        .audit-table td strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .slide--dark .audit-table td strong {
+            color: var(--ink);
+        }
+
+        /* ─── JOURNEY ROW ────────────────────────────────────────── */
+        .journey-row {
+            display: grid;
+            grid-template-columns: 180px 1fr 1fr;
+            gap: 0;
+            border-bottom: 1px solid var(--rule);
+            padding: 18px 0;
+        }
+
+        .journey-row:last-child {
+            border-bottom: none;
+        }
+
+        .journey-col {
+            padding: 0 16px;
+        }
+
+        .journey-col:first-child {
+            padding-left: 0;
+        }
+
+        .journey-col__label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 6px;
+        }
+
+        .journey-col__val {
+            font-family: 'Barlow', sans-serif;
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+
+        @media(max-width:800px) {
+            .journey-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        /* ─── FRICTION BLOCK ─────────────────────────────────────── */
+        .friction-block {
+            border-left: 3px solid var(--critical);
+            padding: 20px 24px;
+            background: rgba(192, 57, 43, 0.04);
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 16px;
+        }
+
+        .friction-block--high {
+            border-color: var(--high);
+            background: rgba(211, 84, 0, 0.04);
+        }
+
+        .friction-block__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .friction-block__body {
+            font-family: 'Barlow', sans-serif;
+            font-size: 13.5px;
+            color: var(--dim);
+            line-height: 1.65;
+        }
+
+        /* ─── BENCHMARK TABLE ────────────────────────────────────── */
+        .bench-head {
+            display: grid;
+            grid-template-columns: 180px 1fr 1fr 1fr;
+            background: var(--card-sage);
+            border-radius: 4px 4px 0 0;
+            border: 1px solid rgba(13, 13, 13, 0.1);
+        }
+
+        .bench-row {
+            display: grid;
+            grid-template-columns: 180px 1fr 1fr 1fr;
+            border: 1px solid rgba(13, 13, 13, 0.08);
+            border-top: none;
+        }
+
+        .bench-cell {
+            padding: 14px 16px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 13px;
+            border-right: 1px solid rgba(13, 13, 13, 0.08);
+            color: var(--ink);
+        }
+
+        .bench-cell:last-child {
+            border-right: none;
+        }
+
+        .bench-cell--label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        .bench-cell--head {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        .bench-cell--poon {
+            background: rgba(13, 13, 13, 0.03);
+        }
+
+        @media(max-width:800px) {
+
+            .bench-head,
+            .bench-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ─── ROADMAP ROW ────────────────────────────────────────── */
+        .roadmap-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .roadmap-item:last-child {
+            border-bottom: none;
+        }
+
+        .roadmap-item__num {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 44px;
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(13, 13, 13, 0.1);
+            min-width: 60px;
+            text-transform: uppercase;
+        }
+
+        .roadmap-item__content {
+            flex: 1;
+        }
+
+        .roadmap-item__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .roadmap-item__body {
+            font-family: 'Barlow', sans-serif;
+            font-size: 13.5px;
+            color: var(--dim);
+            line-height: 1.65;
+        }
+
+        .roadmap-item__tag {
+            margin-top: 10px;
+        }
+
+        /* ─── IMAGE PLACEHOLDER ──────────────────────────────────── */
+        .img-slot {
+            background: rgba(13, 13, 13, 0.06);
+            border: 1.5px dashed rgba(13, 13, 13, 0.2);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 260px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .slide--dark .img-slot {
+            background: rgba(13, 13, 13, 0.04);
+            border-color: rgba(13, 13, 13, 0.15);
+        }
+
+        .img-slot__icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+            opacity: 0.4;
+        }
+
+        .img-slot__label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+
+        .slide--dark .img-slot__label {
+            color: var(--dim);
+        }
+
+        /* ─── LAPTOP FRAME ───────────────────────────────────────── */
+        .laptop-frame {
+            background: #2A2A2A;
+            border-radius: 14px;
+            padding: 10px 10px 22px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+            position: relative;
+        }
+
+        .laptop-screen {
+            background: #E8E8DC;
+            border-radius: 6px;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .laptop-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .laptop-notch {
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48px;
+            height: 6px;
+            background: #1A1A1A;
+            border-radius: 3px;
+        }
+
+        /* ─── SUNBURST DECO ──────────────────────────────────────── */
+        .sunburst {
+            position: absolute;
+            top: 48px;
+            right: 6vw;
+            width: 72px;
+            height: 72px;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        .slide--dark .sunburst {
+            opacity: 0.12;
+        }
+
+        /* ─── COVER SLIDE SPECIFIC ───────────────────────────────── */
+        .cover-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 40px;
+        }
+
+        .cover-kw {
+            margin-top: 60px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .kw-box {
+            width: 48px;
+            height: 48px;
+            background: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+        }
+
+        .kw-box span {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--bg);
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .kw-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+
+        /* ─── SECTION DIVIDER SLIDE ──────────────────────────────── */
+        .section-div {
+            min-height: 60vh;
+        }
+
+        .section-div .display {
+            font-size: clamp(56px, 8vw, 120px);
+        }
+
+        /* ─── STAT PILL ──────────────────────────────────────────── */
+        .stat-pill {
+            display: inline-block;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(36px, 4.5vw, 60px);
+            font-weight: 900;
+            line-height: 1;
+            color: var(--navy);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        /* ─── CHECKLIST ──────────────────────────────────────────── */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--rule);
+            font-family: 'Barlow', sans-serif;
+            font-size: 13.5px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            color: var(--ink);
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist li::before {
+            content: '→';
+            font-family: 'Barlow', sans-serif;
+            color: var(--navy);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .slide--dark .checklist li::before {
+            color: var(--navy);
+        }
+
+        .slide--dark .checklist li {
+            border-color: var(--rule);
+            color: var(--ink);
+        }
+
+        .slide--navy .checklist li::before {
+            color: var(--navy);
+        }
+
+        .slide--navy .checklist li {
+            border-color: var(--rule);
+            color: var(--ink);
+        }
+
+        /* ─── FOOTER STRIP ───────────────────────────────────────── */
+        .slide-footer {
+            position: absolute;
+            bottom: 24px;
+            left: 8vw;
+            right: 8vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--dim);
+            opacity: 0.6;
+        }
+
+        .slide--dark .slide-footer {
+            color: var(--dim);
+        }
+
+        .slide--navy .slide-footer {
+            color: var(--dim);
+        }
+
+        /* ─── TAG ROW ────────────────────────────────────────────── */
+        .tag-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        /* ─── PERSONA SPLIT ──────────────────────────────────────── */
+        .persona-split {
+            display: grid;
+            grid-template-columns: 1fr 2px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .persona-split__rule {
+            background: var(--rule);
+            align-self: stretch;
+        }
+
+        @media(max-width:800px) {
+            .persona-split {
+                grid-template-columns: 1fr;
+            }
+
+            .persona-split__rule {
+                height: 1px;
+                width: 100%;
+            }
+        }
+
+        /* ─── FINAL SLIDE ────────────────────────────────────────── */
+        .final-quote {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(20px, 2.8vw, 36px);
+            font-weight: 500;
+            line-height: 1.35;
+            color: var(--ink);
+            max-width: 780px;
+            border-left: 3px solid rgba(13, 13, 13, 0.2);
+            padding-left: 28px;
+            margin: 40px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+            font-style: italic;
+        }
+
+        /* ─── ANIMATIONS ─────────────────────────────────────────── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide>* {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .slide>*:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .slide>*:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+
+        .slide>*:nth-child(3) {
+            animation-delay: 0.18s;
+        }
+
+        .slide>*:nth-child(4) {
+            animation-delay: 0.24s;
+        }
+
+        .slide>*:nth-child(5) {
+            animation-delay: 0.30s;
+        }
+
+        /* spacing helpers */
+        .mt8 {
+            margin-top: 8px;
+        }
+
+        .mt16 {
+            margin-top: 16px;
+        }
+
+        .mt24 {
+            margin-top: 24px;
+        }
+
+        .mt32 {
+            margin-top: 32px;
+        }
+
+        .mt48 {
+            margin-top: 48px;
+        }
+
+        .mt64 {
+            margin-top: 64px;
+        }
+
+        .mb8 {
+            margin-bottom: 8px;
+        }
+
+        .mb16 {
+            margin-bottom: 16px;
+        }
+
+        .mb24 {
+            margin-bottom: 24px;
+        }
+
+        .mb32 {
+            margin-bottom: 32px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     TOP BAR
+════════════════════════════════════════════════════════════ -->
+    <div class="topbar">
+        <div class="topbar__logo">
+            <span>P</span>
+            Poonawalla Fincorp
+        </div>
+        <div class="topbar__date">April 07, 2026</div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 0 — COVER
+════════════════════════════════════════════════════════════ -->
+    <section class="slide" style="padding-top:120px; min-height:100vh;">
+        <div class="cover-eyebrow">Poonawalla Fincorp &nbsp;·&nbsp; Confidential</div>
+        <h1 class="display">UX Audit &<br>Strategic<br>Roadmap</h1>
+        <div class="rule mt24"></div>
+        <p class="lead mt16">A comprehensive evaluation of the website experience across five key pages — and a clear
+            action plan for what comes next.</p>
+        <div class="cover-kw">
+            <div class="kw-box"><span>K</span></div>
+            <div>
+                <div class="kw-label">By Kwebmaker Digital Agency</div>
+            </div>
+        </div>
+
+        <!-- sunburst deco -->
+        <svg class="sunburst" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#1B2357" stroke-width="1.5">
+                <line x1="36" y1="4" x2="36" y2="0" />
+                <line x1="36" y1="72" x2="36" y2="68" />
+                <line x1="4" y1="36" x2="0" y2="36" />
+                <line x1="72" y1="36" x2="68" y2="36" />
+                <line x1="11" y1="11" x2="8" x2="8" y2="8" />
+                <line x1="61" y1="11" x2="64" y2="8" />
+                <line x1="11" y1="61" x2="8" y2="64" />
+                <line x1="61" y1="61" x2="64" y2="64" />
+            </g>
+            <circle cx="36" cy="36" r="12" stroke="#1B2357" stroke-width="1.5" fill="none" />
+            <circle cx="36" cy="36" r="4" fill="#1B2357" />
+        </svg>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span>
+            <span>UX / UI Audit 2026</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE — THE OBJECTIVE
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--dark">
+        <div class="slide__num">The Objective</div>
+        <h2 class="display--sm">A comprehensive audit to address the gaps &amp; correctly identify current site issues.
+        </h2>
+        <p class="lead mt24">…and how it all impacts users?</p>
+        <div class="rule mt32"></div>
+
+        <div class="col3 mt32">
+            <div class="card card--dark">
+                <div class="card__label">Impact 01</div>
+                <div class="card__title">High Cognitive Load</div>
+                <div class="card__body">Financial jargon, a mega-menu with 70–100+ links, and zero guided entry create
+                    disorientation from the first tap.</div>
+            </div>
+            <div class="card card--dark">
+                <div class="card__label">Impact 02</div>
+                <div class="card__title">Decision Paralysis</div>
+                <div class="card__body">Choice overload from "MSME," "Flexi," "LAP," "Instant" — all presented at equal
+                    visual weight with no starting point.</div>
+            </div>
+            <div class="card card--dark">
+                <div class="card__label">Impact 03</div>
+                <div class="card__title">User Frustration</div>
+                <div class="card__body">"Apply Now" spamming, no visual breakdown, and no progress cues compound into
+                    abandonment — especially on mobile.</div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>The Objective</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE — HIDDEN OBJECTIVE / NARRATIVE ARC
+════════════════════════════════════════════════════════════ -->
+    <section class="slide">
+        <div class="slide__num">The Hidden Objective</div>
+        <h2 class="display--sm">This presentation shifts perspective — from observing a website to understanding a
+            user's struggle.</h2>
+        <div class="rule mt24"></div>
+        <p class="lead mt8">Three lenses. One goal: transform the platform from an information repository into a
+            high-conversion financial tool.</p>
+
+        <div class="col3 mt40">
+            <div class="card" style="border-top: 3px solid var(--navy);">
+                <div class="card__num">01.</div>
+                <div class="card__title">The Tier 2 &amp; Tier 3 User Lens</div>
+                <div class="card__body">For a mobile-first audience on mid-range Android devices, the following
+                    evaluations from the report are most critical.</div>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--high);">
+                <div class="card__num">02.</div>
+                <div class="card__title">Technical &amp; Visual Friction</div>
+                <div class="card__body">High bounce on landing pages due to slow-loading hero assets, broken
+                    calculators, and a non-integrated AI chatbot.</div>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--critical);">
+                <div class="card__num">03.</div>
+                <div class="card__title">The "Immediate" Fixes</div>
+                <div class="card__body">Actionable points to secure the foundation of trust — items that can and should
+                    be resolved from Day 0.</div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>Narrative Arc</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 1 — EXECUTIVE SUMMARY
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--white">
+        <div class="slide__num">01 &nbsp;·&nbsp; Executive Summary</div>
+        <h2 class="display--sm">The boardroom version — first.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col3 mt32">
+            <!-- WINS -->
+            <div>
+                <div class="section-label" style="color:var(--low);">Top 3 Wins</div>
+                <ul class="checklist">
+                    <li><strong>Visual Authority</strong> — Brand aesthetic reads as "Future-Builder" — premium and
+                        differentiated vs. HDFC, ICICI.</li>
+                    <li><strong>SEO-First Structure</strong> — Deep URL architecture delivers strong organic
+                        discoverability.</li>
+                    <li><strong>AAA Rating Presence</strong> — CRISIL &amp; CARE ratings referenced on-site — a trust
+                        foundation most fintechs lack.</li>
+                </ul>
+            </div>
+
+            <!-- MISSES -->
+            <div>
+                <div class="section-label" style="color:var(--critical);">Top 2 Misses</div>
+                <ul class="checklist">
+                    <li><span class="badge badge--critical mb8"
+                            style="display:block;">Critical</span><strong>Information Overload</strong> — 70–100+ link
+                        mega-menu creates decision paralysis, especially for Tier 2/3 users.</li>
+                    <li><span class="badge badge--critical mb8" style="display:block;">Critical</span><strong>Mobile
+                            Friction</strong> — EMI calculator sliders and loan flows are degraded on mid-range Android
+                        devices.</li>
+                </ul>
+            </div>
+
+            <!-- PRIORITIES -->
+            <div>
+                <div class="section-label" style="color:var(--navy);">3 Next-Year Priorities</div>
+                <ul class="checklist">
+                    <li><strong>Guided Discovery</strong> — Replace static directory pages with a loan wizard: question
+                        → match → apply.</li>
+                    <li><strong>Zero-Error Credibility</strong> — Fix all data mismatches and grammatical
+                        inconsistencies site-wide.</li>
+                    <li><strong>AAA Rating Prominence</strong> — Surface trust signals as persistent sticky elements
+                        throughout the journey.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>01 · Executive Summary</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 2 — BUSINESS IMPACT
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--navy">
+        <div class="slide__num">02 &nbsp;·&nbsp; Business Impact</div>
+        <h2 class="display--sm">Projected outcomes from fixing identified UX gaps.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col3 mt32">
+            <div class="card card--navy-bg">
+                <div class="stat-pill">15–20%</div>
+                <div class="card__label">Conversion Rate Lift</div>
+                <div class="card__body">From fixing the EMI calculator and mismatched CTAs that currently cause
+                    mid-journey drop-off.</div>
+            </div>
+            <div class="card card--navy-bg">
+                <div class="stat-pill">↓ Time</div>
+                <div class="card__label">Faster Application Completion</div>
+                <div class="card__body">Simplified product discovery journey reduces time-to-apply significantly for
+                    Tier 2/3 users.</div>
+            </div>
+            <div class="card card--navy-bg">
+                <div class="stat-pill">↓ Cost</div>
+                <div class="card__label">Support Cost Reduction</div>
+                <div class="card__body">Surfacing eligibility (₹30K salary, 750 CIBIL) upfront reduces inbound support
+                    queries at the entry stage.</div>
+            </div>
+        </div>
+
+        <div class="mt32">
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>Impact Area</th>
+                        <th>Current Problem</th>
+                        <th>Expected Lift</th>
+                        <th style="width:100px;">Priority</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lead Quality</strong></td>
+                        <td>PAN Card required at Step 1 — privacy-driven drop-off</td>
+                        <td>Higher quality leads via progressive disclosure model</td>
+                        <td><span class="badge badge--critical">Critical</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bounce Rate</strong></td>
+                        <td>Dense text blocks cause high exit rates on mobile</td>
+                        <td>Reduced bounce via icon-led, scannable layouts</td>
+                        <td><span class="badge badge--high">High</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cross-sell / Upsell</strong></td>
+                        <td>No segmentation between Instant vs Flexi vs Prime</td>
+                        <td>Better product adoption once discovery is guided</td>
+                        <td><span class="badge badge--medium">Medium</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>02 · Business Impact</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 3 — KEY JOURNEY REVIEW
+════════════════════════════════════════════════════════════ -->
+    <section class="slide">
+        <div class="slide__num">03 &nbsp;·&nbsp; Key Journey Review</div>
+        <h2 class="display--sm">Three critical journeys — and where each breaks down.</h2>
+        <div class="rule mt24"></div>
+
+        <!-- Journey 1 -->
+        <div class="mt32">
+            <div class="section-label">Journey 01 — Product Discovery</div>
+            <div class="journey-row" style="border-top: 1px solid var(--rule);">
+                <div class="journey-col">
+                    <div class="journey-col__label">Stage</div>
+                    <div class="journey-col__val"
+                        style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">
+                        Entry</div>
+                </div>
+                <div class="journey-col" style="border-left:1px solid var(--rule);">
+                    <div class="journey-col__label">Current State</div>
+                    <div class="journey-col__val">User lands on homepage with a 100+ link mega-menu. 13 top-level
+                        categories at first interaction.</div>
+                </div>
+                <div class="journey-col" style="border-left:1px solid var(--rule);">
+                    <div class="journey-col__label">Goal State</div>
+                    <div class="journey-col__val">"What do you need?" wizard with 5 guided options. Intent-based — not
+                        product-taxonomy-based.</div>
+                </div>
+            </div>
+            <div class="journey-row">
+                <div class="journey-col">
+                    <div class="journey-col__val"
+                        style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;">
+                        Navigation</div>
+                </div>
+                <div class="journey-col" style="border-left:1px solid var(--rule);">
+                    <div class="journey-col__val">User must scan Instant Loan, Flexi Prime, Instant BL, CV Loan,
+                        Consumer Durable, Gold, Education, Professional, LAP, Medical — all at equal weight.</div>
+                </div>
+                <div class="journey-col" style="border-left:1px solid var(--rule);">
+                    <div class="journey-col__val">Top 5 user intents visible immediately. Trigger labels: "Grow My
+                        Business" · "Manage Personal Debt" · "Buy a Vehicle."</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journey 2 -->
+        <div class="mt32">
+            <div class="section-label">Journey 02 — EMI Calculator</div>
+            <div class="col2">
+                <div class="friction-block">
+                    <div class="friction-block__title">Current: Slider-Only Input</div>
+                    <div class="friction-block__body">Value updates only after mouse release — no live feedback during
+                        drag. Sliders are imprecise on small touchscreens. Unrealistic default values pre-filled. Single
+                        EMI number shown with no principal vs. interest breakdown.</div>
+                </div>
+                <div class="card"
+                    style="border-left:3px solid var(--low); border-radius: 0 4px 4px 0; padding:20px 24px;">
+                    <div class="friction-block__title" style="color:var(--low);">Goal: Real-Time + Accurate</div>
+                    <div class="card__body">Real-time drag feedback. Plus / Minus stepper buttons for precise mobile
+                        input. Defaults matched to actual product ranges. Visual donut breakdown of principal vs.
+                        interest.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journey 3 -->
+        <div class="mt32">
+            <div class="section-label">Journey 03 — Application Flow</div>
+            <div class="col3">
+                <div class="card">
+                    <div class="card__label">Step 1 — Current</div>
+                    <div class="card__title">PAN + Mobile required immediately</div>
+                    <div class="card__body">High-friction entry before user has any eligibility confirmation. Triggers
+                        security anxiety for Tier 2/3 users.</div>
+                    <div class="tag-row"><span class="badge badge--critical">Critical</span></div>
+                </div>
+                <div class="card">
+                    <div class="card__label">Progress — Current</div>
+                    <div class="card__title">No progress indicator</div>
+                    <div class="card__body">User has no sense of how many steps remain. "Form fatigue" causes
+                        abandonment on step 2–3.</div>
+                    <div class="tag-row"><span class="badge badge--high">High</span></div>
+                </div>
+                <div class="card">
+                    <div class="card__label">Data — Current</div>
+                    <div class="card__title">₹50L vs ₹75L Business Loan</div>
+                    <div class="card__body">Navigation shows ₹50L. Product page title says ₹75L. A trust-breaking
+                        discrepancy visible on first visit.</div>
+                    <div class="tag-row"><span class="badge badge--critical">Critical</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>03 · Key Journey Review</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 4 — CUSTOMER FRICTION & DROP-OFF
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--dark">
+        <div class="slide__num">04 &nbsp;·&nbsp; Customer Friction &amp; Drop-off</div>
+        <h2 class="display--sm">Where users abandon the journey — and why.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col2 mt32">
+            <!-- LEFT — friction blocks -->
+            <div>
+                <div class="friction-block" style="background:rgba(192,57,43,0.08); border-color:var(--critical);">
+                    <div class="friction-block__title">The Cognitive Cliff — Navigation</div>
+                    <div class="friction-block__body" style="color:var(--dim);">User opens mega-menu → 13 top-level
+                        categories × 4–8 sub-links each. Financial jargon is unfamiliar to first-time loan seekers.
+                        Hover-based desktop logic breaks on touch devices. No visual hierarchy — every link renders at
+                        identical weight.</div>
+                    <div class="tag-row mt16"><span class="badge badge--critical">Critical</span></div>
+                </div>
+
+                <div class="friction-block friction-block--high mt16"
+                    style="background:rgba(211,84,0,0.08); border-color:var(--high);">
+                    <div class="friction-block__title">Mobile Abandonment — CTAs Below Fold</div>
+                    <div class="friction-block__body" style="color:var(--dim);">Primary "Apply Now" CTA sits below a
+                        long content block. On 360–390px screens (most mid-range Android), users must scroll through
+                        features, eligibility tables, and document lists before reaching any action. No sticky CTA bar
+                        on product pages.</div>
+                    <div class="tag-row mt16"><span class="badge badge--critical">Critical</span></div>
+                </div>
+
+                <div class="friction-block mt16" style="background:rgba(192,57,43,0.08); border-color:var(--critical);">
+                    <div class="friction-block__title">Trust Gaps — Data Mismatch</div>
+                    <div class="friction-block__body" style="color:var(--dim);">Business Loan: ₹50L in navigation, ₹75L
+                        on product page. Salary slip requirements conflict (1 vs 3 months). For a Tier 2/3 user,
+                        inconsistency in loan amounts signals unreliability — and triggers fraud suspicion.</div>
+                    <div class="tag-row mt16"><span class="badge badge--critical">Critical</span></div>
+                </div>
+
+                <div class="friction-block friction-block--high mt16"
+                    style="background:rgba(211,84,0,0.06); border-color:var(--high);">
+                    <div class="friction-block__title">Form Entry Barrier — PAN at Step 1</div>
+                    <div class="friction-block__body" style="color:var(--dim);">PAN Card details requested before any
+                        eligibility confirmation. Many users don't have the card accessible while on mobile. No "Your
+                        data is secure" reassurance adjacent to the field.</div>
+                    <div class="tag-row mt16"><span class="badge badge--high">High</span></div>
+                </div>
+            </div>
+
+            <!-- RIGHT — image placeholder -->
+            <div style="display:flex; flex-direction:column; gap:24px;">
+                <div class="laptop-frame">
+                    <div class="laptop-screen">
+                        <!-- SCREENSHOT: Homepage Mega Menu — replace src below -->
+                        <img src="" alt="Homepage Mega Menu screenshot" style="display:none;" id="img-megamenu">
+                        <div class="img-slot__icon"
+                            style="font-size:32px; opacity:0.2; color:var(--dim); text-align:center; width:100%; padding:48px 0;">
+                            📸</div>
+                    </div>
+                    <div class="laptop-notch"></div>
+                </div>
+                <p
+                    style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dim); opacity:0.5; text-align:center;">
+                    <!-- SCREENSHOT LABEL: Homepage — Mega Menu -->
+                    Screenshot: Homepage Mega Menu
+                </p>
+
+                <div class="laptop-frame">
+                    <div class="laptop-screen">
+                        <!-- SCREENSHOT: Mobile CTA below fold — replace src below -->
+                        <img src="" alt="Mobile CTA screenshot" style="display:none;" id="img-cta">
+                        <div class="img-slot__icon"
+                            style="font-size:32px; opacity:0.2; color:var(--dim); text-align:center; width:100%; padding:48px 0;">
+                            📸</div>
+                    </div>
+                    <div class="laptop-notch"></div>
+                </div>
+                <p
+                    style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dim); opacity:0.5; text-align:center;">
+                    <!-- SCREENSHOT LABEL: Personal Loan — CTA Below Fold -->
+                    Screenshot: Personal Loan — CTA Placement
+                </p>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>04 · Customer Friction &amp; Drop-off</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 5 — TRUST & CONFIDENCE SIGNALS
+════════════════════════════════════════════════════════════ -->
+    <section class="slide">
+        <div class="slide__num">05 &nbsp;·&nbsp; Trust &amp; Confidence Signals</div>
+        <h2 class="display--sm">In finance, bad UX doesn't just reduce usability — it destroys trust.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col2 mt32">
+            <div>
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Trust Element</th>
+                            <th>Current Placement</th>
+                            <th>Should Be</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>AAA / CRISIL Rating</strong></td>
+                            <td>Mid-page trust ticker — below fold on mobile</td>
+                            <td>Sticky header strip · below hero section</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CARE Rating</strong></td>
+                            <td>Present but visually buried</td>
+                            <td>Persistent badge near every CTA</td>
+                        </tr>
+                        <tr>
+                            <td><strong>160M+ Loans Disbursed</strong></td>
+                            <td>Low on homepage — low discovery</td>
+                            <td>Above the fold on homepage</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interest Rate Disclosure</strong></td>
+                            <td>"9.99%*" — asterisk conditions not accessible on mobile</td>
+                            <td>Clear, readable, no asterisk ambiguity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Processing Fees Grid</strong></td>
+                            <td>Not mobile responsive — "Conditions Apply" hidden</td>
+                            <td>Responsive card format — always visible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Awards Section</strong></td>
+                            <td>Slow-rotating slider — most awards never seen</td>
+                            <td>Simultaneous grid display</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <div class="section-label">What's Missing</div>
+                <ul class="checklist">
+                    <li>No "Your information is secure" micro-copy adjacent to sensitive form fields</li>
+                    <li>No estimated time to approval shown upfront — "Get a response in 24 hours"</li>
+                    <li>No visual trust chain: Application → Verification → Disbursal</li>
+                    <li>"9.99%*" asterisk fine print not visible on mobile without scrolling</li>
+                    <li>"Foreclosure Charges" and "Part-prepayment Charges" not explained in plain language</li>
+                    <li>Poonawalla brand legacy buried in About Us — not surfaced on product pages where it matters</li>
+                </ul>
+
+                <div class="card mt24" style="border-left:3px solid var(--critical); border-radius: 0 4px 4px 0;">
+                    <div class="card__label" style="color:var(--critical);">The Cost of Inconsistency</div>
+                    <div class="card__title">Would you trust a financial institute that has spelling errors?</div>
+                    <div class="card__body mt8">Conflicting data (1 vs 3 months of salary slips) creates immediate
+                        hesitation. For users already hesitant to share personal data online, these errors trigger
+                        "fraud" red flags.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>05 · Trust &amp; Confidence</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 6 — RESEARCH & INSIGHTS
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--white">
+        <div class="slide__num">06 &nbsp;·&nbsp; Research &amp; Insights</div>
+        <h2 class="display--sm">The persona gap — who the site is built for vs. who is actually using it.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="persona-split mt32">
+            <div>
+                <div class="section-label" style="color:var(--critical);">Site is Designed For</div>
+                <div
+                    style="font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:0.02em; margin-bottom:20px;">
+                    "Financial Expert"</div>
+                <ul class="checklist">
+                    <li>Understands "Flexi Prime," "CIBIL," "LAP," "MSME"</li>
+                    <li>Desktop or high-end smartphone user</li>
+                    <li>Will scroll and explore independently</li>
+                    <li>Researches rates and APR before deciding</li>
+                    <li>English-primary language comfort</li>
+                </ul>
+            </div>
+            <div class="persona-split__rule" style="background:var(--rule);"></div>
+            <div>
+                <div class="section-label" style="color:var(--low);">Actual User Is</div>
+                <div
+                    style="font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:800; text-transform:uppercase; letter-spacing:0.02em; margin-bottom:20px;">
+                    "First-Time Loan Seeker"</div>
+                <ul class="checklist">
+                    <li>Knows: "Home Loan," "Car Loan," "Shop Loan"</li>
+                    <li>Mid-range Android, 4–5" screen, 4G / intermittent data</li>
+                    <li>Exits if confused within the first 10 seconds</li>
+                    <li>Trust triggers: brand name, local branch, WhatsApp</li>
+                    <li>Prefers Hindi / Regional — English is secondary</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col2 mt40">
+            <div class="card">
+                <div class="card__label">Heuristic Finding 01</div>
+                <div class="card__title">Paradox of Choice (Hick's Law)</div>
+                <div class="card__body">100+ menu links create decision fatigue. In a financial context, this directly
+                    correlates to drop-off rather than deliberation. More options = longer decision time = higher
+                    abandonment.</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Heuristic Finding 02</div>
+                <div class="card__title">Minimum Viable Information</div>
+                <div class="card__body">Tier 2/3 users scan for three numbers: Interest Rate, Maximum Amount, Monthly
+                    EMI. All three are currently buried in different sections of a long-scroll page.</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Heuristic Finding 03</div>
+                <div class="card__title">Trust Before Conversion</div>
+                <div class="card__body">For this demographic, trust is the first conversion hurdle — not product
+                    features. The current journey presents features before trust. This inverts the correct psychological
+                    sequence.</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Heuristic Finding 04</div>
+                <div class="card__title">Progressive Disclosure Required</div>
+                <div class="card__body">The site presents all information upfront. The correct model: show the minimum
+                    to build interest → reveal detail only when the user actively requests it.</div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>06 · Research &amp; Insights</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 7 — EXPERIMENTATION & VALIDATION
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--dark">
+        <div class="slide__num">07 &nbsp;·&nbsp; Experimentation &amp; Validation</div>
+        <h2 class="display--sm">What we tested. What we learned.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col3 mt32">
+            <div class="card card--dark" style="border-top:3px solid var(--rule);">
+                <div class="card__label">Prototype Test 01</div>
+                <div class="stat-pill" style="font-size:40px; color:var(--navy);">40%</div>
+                <div class="card__title" style="margin-top:8px;">Faster Path via Guided Wizard</div>
+                <div class="card__body">Users found their target loan product 40% faster via a Guided Wizard than via
+                    the current nested mega-menu navigation.</div>
+                <div class="tag-row mt16"><span class="badge badge--win"
+                        style="background:rgba(13,13,13,0.07);color:var(--dim);">Validated</span></div>
+            </div>
+            <div class="card card--dark" style="border-top:3px solid var(--rule);">
+                <div class="card__label">Prototype Test 02</div>
+                <div class="stat-pill" style="font-size:40px; color:var(--navy);">~0%</div>
+                <div class="card__title" style="margin-top:8px;">CTR on Rotating Carousel</div>
+                <div class="card__body">Static banners have near-zero click-through. Interactive tools — EMI calculators
+                    and eligibility wizards — are the primary engagement and conversion drivers.</div>
+                <div class="tag-row mt16"><span class="badge badge--win"
+                        style="background:rgba(13,13,13,0.07);color:var(--dim);">Validated</span></div>
+            </div>
+            <div class="card card--dark" style="border-top:3px solid var(--rule);">
+                <div class="card__label">Prototype Test 03</div>
+                <div class="stat-pill" style="font-size:40px; color:var(--navy);">↓ Drop</div>
+                <div class="card__title" style="margin-top:8px;">Progressive Form Disclosure</div>
+                <div class="card__body">Mobile-first step flow (Mobile number first, PAN at Step 2) shows significantly
+                    lower perceived friction and higher form completion signals.</div>
+                <div class="tag-row mt16"><span class="badge badge--win"
+                        style="background:rgba(13,13,13,0.07);color:var(--dim);">Validated</span></div>
+            </div>
+        </div>
+
+        <div class="mt40">
+            <div class="section-label">Next Tests to Run</div>
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>Test</th>
+                        <th>Hypothesis</th>
+                        <th>Metric</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>A/B: Static Hero vs Carousel</strong></td>
+                        <td>Static hero with single CTA outperforms rotating banners</td>
+                        <td>Click-through rate on primary CTA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>A/B: Progressive Form vs PAN First</strong></td>
+                        <td>Soft lead capture first improves completion rate</td>
+                        <td>Form completion %</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prototype: EMI Stepper Buttons</strong></td>
+                        <td>Steppers increase calculator usage on mobile</td>
+                        <td>Calculator interaction rate on mobile</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Usability: Guided Wizard</strong></td>
+                        <td>Wizard reduces time-to-apply for Tier 2/3 users</td>
+                        <td>Task completion time + success rate</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>07 · Experimentation &amp; Validation</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 8 — COMPLETE SITE AUDIT
+     (Page-by-page — 5 pages)
+════════════════════════════════════════════════════════════ -->
+
+    <!-- 8A — HOMEPAGE -->
+    <section class="slide slide--white">
+        <div class="slide__num">08A &nbsp;·&nbsp; Complete Site Audit — Homepage</div>
+        <h2 class="display--sm">poonawallafincorp.com/</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col2 mt32">
+            <div>
+                <div class="section-label">Section-by-Section Findings</div>
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Key Issue</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Hero Carousel</strong></td>
+                            <td>6 rotating slides — no single value prop. Rotates before user finishes reading.</td>
+                            <td><span class="badge badge--critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mega Menu</strong></td>
+                            <td>70–100+ links, hover-based, financial jargon, no icons, no language toggle.</td>
+                            <td><span class="badge badge--critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Loan Tiles</strong></td>
+                            <td>Names only — no USPs, rates, or trust signals. Horizontal scroll hidden.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>EMI Calculator</strong></td>
+                            <td>Unrealistic defaults. No real-time drag. No visual breakdown. Placed too low.</td>
+                            <td><span class="badge badge--critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Trust Ticker</strong></td>
+                            <td>AAA / CRISIL / CARE ratings appear mid-page — below fold on mobile.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Awards</strong></td>
+                            <td>Slow slider — users miss most awards. Should display all simultaneously.</td>
+                            <td><span class="badge badge--medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Process Section</strong></td>
+                            <td>Appears twice on the page. No document clarity. No time estimates per step.</td>
+                            <td><span class="badge badge--medium">Medium</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:20px;">
+                <div class="laptop-frame">
+                    <div class="laptop-screen">
+                        <!-- SCREENSHOT: Homepage Hero + Mega Menu — replace src -->
+                        <img src="" alt="Homepage screenshot" style="display:none;" id="img-homepage">
+                        <div
+                            style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:#333;">
+                            📸</div>
+                    </div>
+                    <div class="laptop-notch"></div>
+                </div>
+                <p
+                    style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(13,13,13,0.25); text-align:center;">
+                    Screenshot: Homepage — Hero + Navigation
+                </p>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>08A · Homepage Audit</span>
+        </div>
+    </section>
+
+    <!-- 8B — PERSONAL LOAN -->
+    <section class="slide">
+        <div class="slide__num">08B &nbsp;·&nbsp; Complete Site Audit — Personal Loan</div>
+        <h2 class="display--sm">poonawallafincorp.com/personal-loan</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col2 mt32">
+            <div>
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Key Issue</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Hero</strong></td>
+                            <td>"9.99%*" asterisk — fine print not accessible on mobile. Generic stock imagery.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Features &amp; Benefits</strong></td>
+                            <td>Long text list. "Big 3" — Rate, Amount, Disbursal Time — are buried. No icons.</td>
+                            <td><span class="badge badge--critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Eligibility &amp; Docs</strong></td>
+                            <td>₹30K salary + 750 CIBIL buried. 1 vs 3 salary slip conflict. No document icons.</td>
+                            <td><span class="badge badge--critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rates &amp; Charges</strong></td>
+                            <td>Grid not mobile responsive. "Conditions Apply" hidden. Jargon unexplained.</td>
+                            <td><span class="badge badge--critical">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Use Case Tabs</strong></td>
+                            <td>Too many tabs — overflow on narrow screens. Generic content.</td>
+                            <td><span class="badge badge--medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>City SEO Section</strong></td>
+                            <td>100+ city links add scroll length. Should collapse to "See all cities" toggle.</td>
+                            <td><span class="badge badge--medium">Medium</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>FAQ</strong></td>
+                            <td>Placed too late in scroll. Missing trust-related FAQs. Conflicts with page content.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:20px;">
+                <div class="laptop-frame">
+                    <div class="laptop-screen">
+                        <!-- SCREENSHOT: Personal Loan Page — replace src -->
+                        <img src="" alt="Personal Loan screenshot" style="display:none;" id="img-pl">
+                        <div
+                            style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:var(--dim);">
+                            📸</div>
+                    </div>
+                    <div class="laptop-notch"></div>
+                </div>
+                <p
+                    style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dim); opacity:0.5; text-align:center;">
+                    Screenshot: Personal Loan Page
+                </p>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>08B · Personal Loan Audit</span>
+        </div>
+    </section>
+
+    <!-- 8C — BUSINESS LOAN -->
+    <section class="slide slide--white">
+        <div class="slide__num">08C &nbsp;·&nbsp; Complete Site Audit — Business Loan</div>
+        <h2 class="display--sm">poonawallafincorp.com/business-loan</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col2 mt32">
+            <div>
+                <div class="friction-block" style="margin-bottom:20px;">
+                    <div class="friction-block__title">🔴 Data Integrity — Critical</div>
+                    <div class="friction-block__body">Page title reads "Business Loan of Up to ₹75 Lakh." Navigation
+                        links reference ₹50L. This discrepancy is visible on the very first visit and is both a user
+                        trust issue and a regulatory liability. Must be fixed immediately.</div>
+                </div>
+
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Key Issue</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Audience Relevance</strong></td>
+                            <td>Page designed for corporate users — alienates Kirana store owners and SMEs who are the
+                                core Tier 2/3 audience.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Imagery</strong></td>
+                            <td>Generic business imagery — no local shop, pharmacy, or SME context.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Eligibility</strong></td>
+                            <td>Complex tables. No self-qualification. No "Am I Eligible?" interactive entry.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Social Proof</strong></td>
+                            <td>No business-specific testimonials. No "50,000+ Shopkeepers Funded" counter.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Segmentation</strong></td>
+                            <td>No differentiation between a shopkeeper (₹5L need) vs an MSME (₹50L need).</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:20px;">
+                <div class="laptop-frame" style="background:#111;">
+                    <div class="laptop-screen">
+                        <!-- SCREENSHOT: Business Loan Page — replace src -->
+                        <img src="" alt="Business Loan screenshot" style="display:none;" id="img-bl">
+                        <div
+                            style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:#333;">
+                            📸</div>
+                    </div>
+                    <div class="laptop-notch"></div>
+                </div>
+                <p
+                    style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(13,13,13,0.25); text-align:center;">
+                    Screenshot: Business Loan Page
+                </p>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>08C · Business Loan Audit</span>
+        </div>
+    </section>
+
+    <!-- 8D — CV LOAN -->
+    <section class="slide">
+        <div class="slide__num">08D &nbsp;·&nbsp; Complete Site Audit — Commercial Vehicle Loan</div>
+        <h2 class="display--sm">poonawallafincorp.com/commercial-vehicle-loan</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col3 mt32">
+            <div class="card card--dark" style="border-top:3px solid var(--critical);">
+                <div class="card__label" style="color:var(--critical);">Critical Gap</div>
+                <div class="card__title">No EMI Calculator</div>
+                <div class="card__body">Users cannot calculate affordability on the page. Must call or visit a branch to
+                    understand loan cost — a massive friction point for Tier 2/3 transport business owners.</div>
+            </div>
+            <div class="card card--dark" style="border-top:3px solid var(--critical);">
+                <div class="card__label" style="color:var(--critical);">Critical Gap</div>
+                <div class="card__title">No Interest Rate Displayed</div>
+                <div class="card__body">Interest rate is not displayed anywhere on the page. This is both a major trust
+                    gap and a potential disclosure compliance issue.</div>
+            </div>
+            <div class="card card--dark" style="border-top:3px solid var(--critical);">
+                <div class="card__label" style="color:var(--critical);">Critical Gap</div>
+                <div class="card__title">No Eligibility Details</div>
+                <div class="card__body">Users have no way to self-qualify on the page. All eligibility queries require
+                    contacting support — adding friction and support cost.</div>
+            </div>
+        </div>
+
+        <div class="col2 mt32">
+            <div>
+                <div class="section-label">Visual Context Issues</div>
+                <ul class="checklist">
+                    <li>Abstract financial imagery — no actual vehicle photos. Tier 2/3 transport owners (truckers, taxi
+                        operators, tempo drivers) cannot see themselves reflected in the page.</li>
+                    <li>No vehicle category distinction — trucks, commercial tempos, buses, and mini-vans all have
+                        different loan structures but are presented identically.</li>
+                    <li>Document list is text-only. Users don't know which documents are mandatory vs. optional.
+                        Suggested fix: add photo-style icons (RC Book, Aadhaar, Bank Statement).</li>
+                </ul>
+            </div>
+            <div class="laptop-frame">
+                <div class="laptop-screen">
+                    <!-- SCREENSHOT: CV Loan Page — replace src -->
+                    <img src="" alt="CV Loan screenshot" style="display:none;" id="img-cv">
+                    <div
+                        style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:var(--dim);">
+                        📸</div>
+                </div>
+                <div class="laptop-notch"></div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>08D · CV Loan Audit</span>
+        </div>
+    </section>
+
+    <!-- 8E — ABOUT US -->
+    <section class="slide slide--white">
+        <div class="slide__num">08E &nbsp;·&nbsp; Complete Site Audit — About Us</div>
+        <h2 class="display--sm">poonawallafincorp.com/about-us</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col2 mt32">
+            <div>
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Key Issue</th>
+                            <th>Priority</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Language &amp; Tone</strong></td>
+                            <td>"Financial Inclusion," "Governance Framework," "Stakeholder Value" — inaccessible to
+                                Tier 2/3 audience.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Audience Mix</strong></td>
+                            <td>Investor content and user-facing content on the same page — no separation of intent.
+                            </td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Branch Presence</strong></td>
+                            <td>"Find Your Nearest Branch" CTA not prominent — Tier 2/3 users value physical access
+                                highly.</td>
+                            <td><span class="badge badge--high">High</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Poonawalla Legacy</strong></td>
+                            <td>Brand history mentioned in corporate language — no warmth or human connection in the
+                                narrative.</td>
+                            <td><span class="badge badge--medium">Medium</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="card mt24">
+                    <div class="card__label">The Trust Conversion Opportunity</div>
+                    <div class="card__title">The "Poonawalla Name" Is an Underused Asset</div>
+                    <div class="card__body mt8">For Tier 2/3 users, the brand legacy and family name are more powerful
+                        trust triggers than the AAA rating. A "Find Your Nearest Branch" CTA and a plain-language legacy
+                        timeline on this page would directly convert hesitant users. Currently, neither is prioritized.
+                    </div>
+                </div>
+            </div>
+
+            <div class="laptop-frame">
+                <div class="laptop-screen">
+                    <!-- SCREENSHOT: About Us Page — replace src -->
+                    <img src="" alt="About Us screenshot" style="display:none;" id="img-about">
+                    <div
+                        style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:#333;">
+                        📸</div>
+                </div>
+                <div class="laptop-notch"></div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>08E · About Us Audit</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 9 — DESIGN SYSTEM & DELIVERY MATURITY
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--dark">
+        <div class="slide__num">09 &nbsp;·&nbsp; Design System &amp; Delivery Maturity</div>
+        <h2 class="display--sm">Long-term UX value comes from organizational capability — not just immediate interface
+            changes.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col3 mt32">
+            <div class="card card--dark">
+                <div class="card__label">Consistency Gains</div>
+                <div class="card__title">Single Component Library</div>
+                <div class="card__body">Multiple CTA styles and mismatched font sizes across pages. Establishing one
+                    coherent component library eliminates design debt from the ground up.</div>
+            </div>
+            <div class="card card--dark">
+                <div class="card__label">Design Debt Reduction</div>
+                <div class="card__title">From 70+ Links to 5 Categories</div>
+                <div class="card__body">Consolidating 70+ navigation links into 5 user-centric categories aligned to
+                    actual customer intent — not internal org structure — is the highest-impact IA change.</div>
+            </div>
+            <div class="card card--dark">
+                <div class="card__label">Compliance Collaboration</div>
+                <div class="card__title">Disclosures Baked In</div>
+                <div class="card__body">Streamlining Design ↔ Compliance handoff so regulatory disclosures are built
+                    into components — not added as last-minute afterthoughts post-launch.</div>
+            </div>
+        </div>
+
+        <div class="mt40">
+            <div class="section-label">Current Design Debt — Priority Fixes</div>
+            <table class="audit-table">
+                <thead>
+                    <tr>
+                        <th>Debt Area</th>
+                        <th>Current Problem</th>
+                        <th>Recommended Fix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Button Styles</strong></td>
+                        <td>Multiple CTA styles — inconsistent border-radius, color, size across pages</td>
+                        <td>2 variants only: Primary (yellow) + Secondary (ghost)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Typography</strong></td>
+                        <td>Multiple font sizes for body text — inconsistent reading experience</td>
+                        <td>Global body text minimum 16px — enforced across all pages</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grid System</strong></td>
+                        <td>No consistent grid — content boxes misalign across pages</td>
+                        <td>12-column grid across all page templates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Icon System</strong></td>
+                        <td>No icon library in use — text-only navigation and features</td>
+                        <td>Single icon set (e.g., Phosphor / Lucide) across all UI</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Responsive Tables</strong></td>
+                        <td>Rates/Charges tables not mobile-responsive — overflow on small screens</td>
+                        <td>Convert all data tables to responsive card stacks for mobile</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>09 · Design System &amp; Delivery</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 10 — COMPLIANCE & RISK
+════════════════════════════════════════════════════════════ -->
+    <section class="slide">
+        <div class="slide__num">10 &nbsp;·&nbsp; Compliance &amp; Risk</div>
+        <h2 class="display--sm">In financial services, UX failures are also compliance failures.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col3 mt32">
+            <div class="card" style="border-top:3px solid var(--critical);">
+                <div class="badge badge--critical mb16">Critical</div>
+                <div class="card__title">Data Integrity Risk</div>
+                <div class="card__body">The ₹50L vs ₹75L Business Loan discrepancy is both an operational risk and a
+                    regulatory liability. Must be resolved immediately across all touchpoints.</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--critical);">
+                <div class="badge badge--critical mb16">Critical</div>
+                <div class="card__title">Regulatory Disclosure</div>
+                <div class="card__body">The Rates &amp; Charges grid is not responsive — "Conditions Apply" text is
+                    hidden on mobile, creating a compliance exposure for undisclosed terms.</div>
+            </div>
+            <div class="card" style="border-top:3px solid var(--high);">
+                <div class="badge badge--high mb16">High</div>
+                <div class="card__title">Accessibility (WCAG)</div>
+                <div class="card__body">Color contrast issues on CTAs must be resolved to meet WCAG 2.1 AA standards.
+                    Body text below 16px in multiple sections fails minimum mobile readability requirements.</div>
+            </div>
+        </div>
+
+        <div class="col2 mt32">
+            <div>
+                <div class="section-label">Additional Accessibility Gaps</div>
+                <ul class="checklist">
+                    <li>Color-coding used for status indicators — not accessible to color-vision-impaired users</li>
+                    <li>No alt-text on carousel images — screen reader inaccessible</li>
+                    <li>High contrast mode not tested or supported</li>
+                    <li>No vernacular support — excludes non-English speaking Tier 2/3 users entirely</li>
+                </ul>
+            </div>
+            <div>
+                <div class="section-label">Missing CV Loan Disclosures</div>
+                <ul class="checklist">
+                    <li>Interest rate not displayed on Commercial Vehicle Loan page — potential disclosure
+                        non-compliance</li>
+                    <li>No eligibility criteria published — forces offline interaction which adds compliance complexity
+                    </li>
+                    <li>No processing fee disclosure on the CV Loan page</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>10 · Compliance &amp; Risk</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 11 — COMPETITIVE BENCHMARK
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--navy">
+        <div class="slide__num">11 &nbsp;·&nbsp; Competitive Benchmark</div>
+        <h2 class="display--sm">How Poonawalla Fincorp stacks up — and the opportunity ahead.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="mt32">
+            <div class="bench-head">
+                <div class="bench-cell bench-cell--head" style="padding:14px 16px;">Dimension</div>
+                <div class="bench-cell bench-cell--head">Fintechs<br><span
+                        style="font-weight:300; font-size:9px; opacity:0.6;">Slice · Jupiter</span></div>
+                <div class="bench-cell bench-cell--head">Incumbents<br><span
+                        style="font-weight:300; font-size:9px; opacity:0.6;">HDFC · ICICI</span></div>
+                <div class="bench-cell bench-cell--head bench-cell--poon">Poonawalla Fincorp</div>
+            </div>
+
+            <div class="bench-row">
+                <div class="bench-cell bench-cell--label">Visual Design</div>
+                <div class="bench-cell" style="color:var(--dim);">Modern, minimal, app-first</div>
+                <div class="bench-cell" style="color:var(--dim);">Dated, functional, dense</div>
+                <div class="bench-cell bench-cell--poon" style="color:var(--low); font-weight:600;">Strong —
+                    "Future-Builder" ✓</div>
+            </div>
+            <div class="bench-row">
+                <div class="bench-cell bench-cell--label">Journey Navigation</div>
+                <div class="bench-cell" style="color:var(--dim);">Frictionless wizard flows</div>
+                <div class="bench-cell" style="color:var(--dim);">Intuitive, journey-based IA</div>
+                <div class="bench-cell bench-cell--poon" style="color:var(--high); font-weight:600;">Mega-menu, 100+
+                    links ⚠</div>
+            </div>
+            <div class="bench-row">
+                <div class="bench-cell bench-cell--label">Speed to Lead</div>
+                <div class="bench-cell" style="color:var(--dim);">Phone number only at entry</div>
+                <div class="bench-cell" style="color:var(--dim);">Average — progressive</div>
+                <div class="bench-cell bench-cell--poon" style="color:var(--high); font-weight:600;">Below fintech
+                    standard ⚠</div>
+            </div>
+            <div class="bench-row">
+                <div class="bench-cell bench-cell--label">EMI Calculator</div>
+                <div class="bench-cell" style="color:var(--dim);">Real-time, accurate defaults</div>
+                <div class="bench-cell" style="color:var(--dim);">Functional, mostly accurate</div>
+                <div class="bench-cell bench-cell--poon" style="color:var(--critical); font-weight:600;">Broken
+                    defaults, no real-time ⚠</div>
+            </div>
+            <div class="bench-row">
+                <div class="bench-cell bench-cell--label">Trust Signals</div>
+                <div class="bench-cell" style="color:var(--dim);">Social proof + instant feedback</div>
+                <div class="bench-cell" style="color:var(--dim);">Brand legacy + AAA</div>
+                <div class="bench-cell bench-cell--poon" style="color:var(--high); font-weight:600;">AAA present — not
+                    sticky ⚠</div>
+            </div>
+            <div class="bench-row">
+                <div class="bench-cell bench-cell--label">Mobile Experience</div>
+                <div class="bench-cell" style="color:var(--dim);">Native-app-grade UX</div>
+                <div class="bench-cell" style="color:var(--dim);">Decent mobile site</div>
+                <div class="bench-cell bench-cell--poon" style="color:var(--critical); font-weight:600;">Degraded on
+                    mid-range Android ⚠</div>
+            </div>
+            <div class="bench-row">
+                <div class="bench-cell bench-cell--label">WhatsApp / AI</div>
+                <div class="bench-cell" style="color:var(--dim);">Some integration</div>
+                <div class="bench-cell" style="color:var(--dim);">Minimal</div>
+                <div class="bench-cell bench-cell--poon" style="color:var(--high); font-weight:600;">Chatbot isolated —
+                    not in funnel ⚠</div>
+            </div>
+        </div>
+
+        <div class="card card--navy-bg mt32">
+            <div class="card__label">Core Opportunity</div>
+            <div class="card__title" style="font-size:16px;">Combine Poonawalla's brand premium with fintech-grade,
+                frictionless journey design.</div>
+            <div class="card__body mt8">The brand premium (AAA, Poonawalla legacy, 14 loan types) is already there. The
+                missing piece is fintech-grade journey simplicity. That combination is defensible and differentiated.
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>11 · Competitive Benchmark</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 12 — AGENCY PERFORMANCE
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--white">
+        <div class="slide__num">12 &nbsp;·&nbsp; Agency Performance — Kwebmaker</div>
+        <h2 class="display--sm">Strategic partner — not a screen-production vendor.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col3 mt32">
+            <div class="card">
+                <div class="card__label">Strategic Thinking</div>
+                <div class="card__title">Deep-Dive Audits That Surface Business Risks</div>
+                <div class="card__body">Transitioned from executing requests to conducting heuristic evaluations that
+                    surface business risks — not just design issues. CMO-ready output from day one.</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Research Rigor</div>
+                <div class="card__title">Grounded in User Psychology</div>
+                <div class="card__body">Moving beyond visuals to heuristic evaluations grounded in actual Tier 2/3 user
+                    psychology, competitive benchmarking, and cognitive load principles (Hick's Law).</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Responsiveness</div>
+                <div class="card__title">Rapid Identification of Technical Debt</div>
+                <div class="card__body">Proactive documentation of JS issues, PageSpeed degradation, LCP bottlenecks,
+                    and data discrepancies — flagged before they became larger problems.</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Design Quality</div>
+                <div class="card__title">"Future-Builder" Aesthetic Direction</div>
+                <div class="card__body">Brand aesthetic direction validated in the audit as a genuine differentiator vs.
+                    HDFC, ICICI, and fintech challengers. Distinctive, premium, and scalable.</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Experimentation</div>
+                <div class="card__title">Evidence-Based Recommendations</div>
+                <div class="card__body">Prototype testing validated 40% faster product discovery via Guided Wizard vs.
+                    nested dropdown. Every recommendation in this deck is backed by a testable hypothesis.</div>
+            </div>
+            <div class="card">
+                <div class="card__label">Implementation Partnership</div>
+                <div class="card__title">Compliance-Aware Architecture</div>
+                <div class="card__body">IA restructuring plan, compliance-aware component recommendations, and design ↔
+                    legal handoff frameworks delivered as part of the engagement — not as extras.</div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>12 · Agency Performance</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE 13 — NEXT-YEAR ROADMAP & ASKS
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--dark">
+        <div class="slide__num">13 &nbsp;·&nbsp; Next-Year Roadmap &amp; Asks</div>
+        <h2 class="display--sm">Three clear priorities. One strategic ask.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="mt32">
+            <div class="roadmap-item">
+                <div class="roadmap-item__num">01</div>
+                <div class="roadmap-item__content">
+                    <div class="roadmap-item__title">Core UX Debt Clean-up — Day 0</div>
+                    <div class="roadmap-item__body">Fix all spelling, grammar errors, and financial data mismatches
+                        across PL / BL pages. Resolve ₹50L vs ₹75L discrepancy. Fix salary slip document conflict. Make
+                        "Conditions Apply" visible on mobile. Establishes professional credibility and safety — the
+                        foundation everything else depends on.</div>
+                    <div class="roadmap-item__tag"><span class="badge badge--critical">Critical · 0–30 Days</span></div>
+                </div>
+            </div>
+
+            <div class="roadmap-item">
+                <div class="roadmap-item__num">02</div>
+                <div class="roadmap-item__content">
+                    <div class="roadmap-item__title">The Guided Journey — Discovery Wizard + Eligibility Checker</div>
+                    <div class="roadmap-item__body">Build and launch the Discovery Wizard and Eligibility Checker for
+                        Personal Loan and Business Loan. Replace the mega-menu with 5 intent-based categories with
+                        icons. Intent labels: "Grow My Business" · "Manage Personal Debt" · "Buy a Vehicle." Projected
+                        15–20% conversion rate lift.</div>
+                    <div class="roadmap-item__tag"><span class="badge badge--high">High · 30–60 Days</span></div>
+                </div>
+            </div>
+
+            <div class="roadmap-item">
+                <div class="roadmap-item__num">03</div>
+                <div class="roadmap-item__content">
+                    <div class="roadmap-item__title">Performance Optimization — 14-Second LCP Issue</div>
+                    <div class="roadmap-item__body">Solve the LCP bottleneck — page speed is a direct revenue lever and
+                        SEO signal. Optimize JS bundle, implement lazy loading, reduce heavy hero assets. Also includes
+                        integrating the AI chatbot into the lead funnel and transitioning to Account Aggregator passive
+                        document verification (reduces funnel by 3–4 screens).</div>
+                    <div class="roadmap-item__tag"><span class="badge badge--medium">Medium · 60–90 Days</span></div>
+                </div>
+            </div>
+
+            <div class="roadmap-item">
+                <div class="roadmap-item__num">→</div>
+                <div class="roadmap-item__content">
+                    <div class="roadmap-item__title" style="color:var(--dim);">Strategic · Q3–Q4</div>
+                    <div class="roadmap-item__body">Vernacular support (Hindi / Regional language toggle for Apply Now
+                        forms). WhatsApp Apply flow integration. These are major conversion levers for Tier 2/3 — high
+                        effort, highest long-term impact.</div>
+                    <div class="roadmap-item__tag"><span class="badge"
+                            style="background:rgba(13,13,13,0.07);color:var(--dim);">Strategic</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>13 · Roadmap &amp; Asks</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE — THE ASK
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--navy">
+        <div class="slide__num">The Ask</div>
+        <h2 class="display--sm">One thing we need the CMO to sponsor.</h2>
+        <div class="rule mt24"></div>
+
+        <div class="col2 mt40">
+            <div>
+                <div class="card card--navy-bg" style="padding:36px 32px;">
+                    <div class="card__label">Sponsorship Required</div>
+                    <div class="card__title" style="font-size:20px; line-height:1.3;">UX-Analytics Integration</div>
+                    <div class="card__body mt16">A dedicated tracking setup to measure journey-level drop-off in
+                        real-time. Without session-level behavioral data — Hotjar, Mixpanel, or GA4 funnel events — UX
+                        improvements cannot be measured accurately, and the business case for continued UX investment
+                        cannot be proven.</div>
+                    <div class="mt24">
+                        <div class="section-label">Requires sign-off across</div>
+                        <div class="tag-row">
+                            <span class="badge"
+                                style="background:rgba(13,13,13,0.08);color:var(--dim);">Marketing</span>
+                            <span class="badge" style="background:rgba(13,13,13,0.08);color:var(--dim);">Product</span>
+                            <span class="badge"
+                                style="background:rgba(13,13,13,0.08);color:var(--dim);">Engineering</span>
+                            <span class="badge"
+                                style="background:rgba(13,13,13,0.08);color:var(--dim);">Analytics</span>
+                            <span class="badge"
+                                style="background:rgba(13,13,13,0.08);color:var(--dim);">Compliance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center;">
+                <div class="final-quote">
+                    "The site serves SEO needs better than it serves human needs. Addressing these gaps will transform
+                    the platform from an information repository into a high-conversion financial tool."
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>The Strategic Ask</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     SLIDE — THANK YOU / END
+════════════════════════════════════════════════════════════ -->
+    <section class="slide slide--dark" style="min-height:100vh; justify-content:space-between;">
+        <div>
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:80px; margin-top:32px;">
+                <div
+                    style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--dim); opacity:0.6;">
+                    Poonawalla Fincorp × Kwebmaker Digital Agency</div>
+            </div>
+            <h1 class="display">Let's Build<br>the Future<br>Together.</h1>
+        </div>
+
+        <div>
+            <div class="rule"></div>
+            <div class="col3 mt32">
+                <div>
+                    <div class="card__label">Contact</div>
+                    <div style="font-family:'Barlow',sans-serif; color:var(--ink); font-size:14px; margin-top:6px;">
+                        hello@kwebmaker.com</div>
+                    <div style="font-family:'Barlow',sans-serif; color:var(--dim); font-size:13px; margin-top:2px;">
+                        kwebmaker.com</div>
+                </div>
+                <div>
+                    <div class="card__label">Prepared For</div>
+                    <div style="font-family:'Barlow',sans-serif; color:var(--ink); font-size:14px; margin-top:6px;">
+                        Poonawalla Fincorp</div>
+                    <div style="font-family:'Barlow',sans-serif; color:var(--dim); font-size:13px; margin-top:2px;">
+                        Confidential · April 2026</div>
+                </div>
+                <div>
+                    <div class="card__label">Document</div>
+                    <div style="font-family:'Barlow',sans-serif; color:var(--ink); font-size:14px; margin-top:6px;">UX
+                        Audit &amp; Strategic Roadmap</div>
+                    <div style="font-family:'Barlow',sans-serif; color:var(--dim); font-size:13px; margin-top:2px;">v1.0
+                        · April 07, 2026</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            <span>Kwebmaker Digital Agency</span><span>kwebmaker.com</span>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+     IMAGE SWAP HELPER (for inserting screenshots)
+     To add a screenshot: find the <img> tag with the matching
+     id, set display:block, and fill in the src="" with your
+     hosted image URL. The 📸 placeholder div above it will
+     still show if src is empty — remove the emoji div once
+     your image is live.
+════════════════════════════════════════════════════════════ -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        // Auto-hide emoji placeholder when a real image is loaded
+        document.querySelectorAll('.laptop-screen img').forEach(img => {
+            if (img.src && img.src !== window.location.href) {
+                img.style.display = 'block';
+                const placeholder = img.nextElementSibling;
+                if (placeholder) placeholder.style.display = 'none';
