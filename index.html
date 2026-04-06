@@ -1341,16 +1341,6 @@
                     <div class="tag-row mt16"><span class="badge badge--critical">Critical</span></div>
                 </div>
 
-                <div class="friction-block friction-block--high mt16"
-                    style="background:rgba(211,84,0,0.08); border-color:var(--high);">
-                    <div class="friction-block__title">Mobile Abandonment — CTAs Below Fold</div>
-                    <div class="friction-block__body" style="color:var(--dim);">Primary "Apply Now" CTA sits below a
-                        long content block. On 360–390px screens (most mid-range Android), users must scroll through
-                        features, eligibility tables, and document lists before reaching any action. No sticky CTA bar
-                        on product pages.</div>
-                    <div class="tag-row mt16"><span class="badge badge--critical">Critical</span></div>
-                </div>
-
                 <div class="friction-block mt16" style="background:rgba(192,57,43,0.08); border-color:var(--critical);">
                     <div class="friction-block__title">Trust Gaps — Data Mismatch</div>
                     <div class="friction-block__body" style="color:var(--dim);">Business Loan: ₹50L in navigation, ₹75L
@@ -1374,7 +1364,10 @@
                 <div class="laptop-frame">
                     <div class="laptop-screen">
                         <!-- SCREENSHOT: Homepage Mega Menu — replace src below -->
-                        <img src="img-megamenu.png" alt="Homepage Mega Menu screenshot" ;" id="img-megamenu">
+                        <img src="" alt="Homepage Mega Menu screenshot" style="display:none;" id="img-megamenu">
+                        <div class="img-slot__icon"
+                            style="font-size:32px; opacity:0.2; color:var(--dim); text-align:center; width:100%; padding:48px 0;">
+                            📸</div>
                     </div>
                     <div class="laptop-notch"></div>
                 </div>
@@ -1384,21 +1377,6 @@
                     Screenshot: Homepage Mega Menu
                 </p>
 
-                <div class="laptop-frame">
-                    <div class="laptop-screen">
-                        <!-- SCREENSHOT: Mobile CTA below fold — replace src below -->
-                        <img src="img-cta.png" alt="Mobile CTA screenshot" id="img-cta">
-                        <div class="img-slot__icon"
-                            style="font-size:32px; opacity:0.2; color:var(--dim); text-align:center; width:100%; padding:48px 0;">
-                            📸</div>
-                    </div>
-                    <div class="laptop-notch"></div>
-                </div>
-                <p
-                    style="font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:var(--dim); opacity:0.5; text-align:center;">
-                    <!-- SCREENSHOT LABEL: Personal Loan — CTA Below Fold -->
-                    Screenshot: Personal Loan — CTA Placement
-                </p>
             </div>
         </div>
 
@@ -1702,7 +1680,10 @@
                 <div class="laptop-frame">
                     <div class="laptop-screen">
                         <!-- SCREENSHOT: Homepage Hero + Mega Menu — replace src -->
-                        <img src="img-homepage.png" alt="Homepage screenshot" id="img-homepage">
+                        <img src="" alt="Homepage screenshot" style="display:none;" id="img-homepage">
+                        <div
+                            style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:#333;">
+                            📸</div>
                     </div>
                     <div class="laptop-notch"></div>
                 </div>
@@ -1778,7 +1759,10 @@
                 <div class="laptop-frame">
                     <div class="laptop-screen">
                         <!-- SCREENSHOT: Personal Loan Page — replace src -->
-                        <img src="img-pl.png" alt="Personal Loan screenshot" id="img-pl">
+                        <img src="" alt="Personal Loan screenshot" style="display:none;" id="img-pl">
+                        <div
+                            style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:var(--dim);">
+                            📸</div>
                     </div>
                     <div class="laptop-notch"></div>
                 </div>
@@ -1852,7 +1836,10 @@
                 <div class="laptop-frame" style="background:#111;">
                     <div class="laptop-screen">
                         <!-- SCREENSHOT: Business Loan Page — replace src -->
-                        <img src="img-bl.png" alt="Business Loan screenshot" id="img-bl">
+                        <img src="" alt="Business Loan screenshot" style="display:none;" id="img-bl">
+                        <div
+                            style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:#333;">
+                            📸</div>
                     </div>
                     <div class="laptop-notch"></div>
                 </div>
@@ -1910,7 +1897,10 @@
             <div class="laptop-frame">
                 <div class="laptop-screen">
                     <!-- SCREENSHOT: CV Loan Page — replace src -->
-                    <img src="img-cv.png" alt="CV Loan screenshot" id="img-cv">
+                    <img src="" alt="CV Loan screenshot" style="display:none;" id="img-cv">
+                    <div
+                        style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:var(--dim);">
+                        📸</div>
                 </div>
                 <div class="laptop-notch"></div>
             </div>
@@ -1978,7 +1968,10 @@
             <div class="laptop-frame">
                 <div class="laptop-screen">
                     <!-- SCREENSHOT: About Us Page — replace src -->
-                    <img src="img-about.png" alt="About Us screenshot" id="img-about">
+                    <img src="" alt="About Us screenshot" style="display:none;" id="img-about">
+                    <div
+                        style="font-size:28px; opacity:0.15; text-align:center; width:100%; padding:64px 0; color:#333;">
+                        📸</div>
                 </div>
                 <div class="laptop-notch"></div>
             </div>
@@ -2382,8 +2375,9 @@
             <div class="col3 mt32">
                 <div>
                     <div class="card__label">Contact</div>
-                    <div style="font-family:'Barlow',sans-serif; color:var(--ink); font-size:14px; margin-top:6px;">
-                        hello@kwebmaker.com</div>
+                    <div style="font-family:'Barlow',sans-serif; color:var(--ink); font-size:14px; margin-top:6px;"><a
+                            href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                            data-cfemail="91f9f4fdfdfed1fae6f4f3fcf0faf4e3bff2fefc">[email&#160;protected]</a></div>
                     <div style="font-family:'Barlow',sans-serif; color:var(--dim); font-size:13px; margin-top:2px;">
                         kwebmaker.com</div>
                 </div>
@@ -2418,10 +2412,7 @@
      your image is live.
 ════════════════════════════════════════════════════════════ -->
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script>
         // Auto-hide emoji placeholder when a real image is loaded
-        document.querySelectorAll('.laptop-screen img').forEach(img => {
-            if (img.src && img.src !== window.location.href) {
-                img.style.display = 'block';
-                const placeholder = img.nextElementSibling;
-                if (placeholder) placeholder.style.display = 'none';
+        document.querySelectorAll('.laptop-s
